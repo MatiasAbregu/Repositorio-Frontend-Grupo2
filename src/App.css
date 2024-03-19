@@ -1,0 +1,58 @@
+*{width: 100%;}
+
+.btnModify{
+    background-color: transparent;
+    border: 2px solid lightblue;
+    border-radius: 7px;
+    color: black;
+    transition: all 0.5s;
+    padding: 8% 18%;
+}
+
+.btnModify:hover{
+    background-color: black;
+    border: 2px solid lightblue; 
+    color: lightblue;
+}
+
+.btnDelete{
+    background-color: transparent;
+    border: 2px solid red;
+    color: black;
+    transition: all 0.5s;
+    margin-top: 15%;
+}
+
+.btnDelete:hover{
+    background-color: red;
+    border: 2px solid red;
+    color: white;
+}
+
+.btnAdd{
+    width: 50%;
+    margin: 0 25% 1% 25%;
+    background-color: transparent;
+    border: 2px solid lightgreen;
+    background-color: white;
+    color: black;
+    transition: all 0.3s;
+} 
+
+.btnAdd:hover{
+    border: 2px solid lightgreen;
+    background-color: lightgreen;
+    color: white;
+}
+
+.btnWarning{
+    background-color: red;
+    color: white;
+    transition: all 0.5s;
+    margin-top: 15%;
+}
+
+.btnWarning:hover{
+    background-color: darkred;
+    color: white;
+}
