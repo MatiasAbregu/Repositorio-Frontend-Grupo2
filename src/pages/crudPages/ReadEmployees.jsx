@@ -35,7 +35,7 @@ export const ReadEmployees = () => {
     }
 
     const listOfEmployees = () => {
-        EmployeeService.getAllEmployees(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(res => {
+        EmployeeService.getAllEmployeesWithAllInfo(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(res => {
             setData(res.data)
         }).catch(e => console.log(e));
     }

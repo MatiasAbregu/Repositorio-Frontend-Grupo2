@@ -43,7 +43,7 @@ const UserCreate = ({ employee }) => {
     UserService.createUser(person).then(res => {
       if (res.data.value) setLog("Success");
       else setLog("Failed")
-    }).catch(e => console.log(e));
+    }).catch(e => setLog("Failed"));
 
     window.scrollTo(0, 0);
   };
@@ -51,14 +51,14 @@ const UserCreate = ({ employee }) => {
   useEffect(() => {
     if (log === "Success") {
       setAlertComponent(
-        <Alert severity="success" sx={{ width: 500, mt: 2 }}>
+        <Alert severity="success" sx={{ width: 500, mt: 2, '*': { width: "auto" }  }}>
           ¡Registro creado con éxito! Ya puedes iniciar sesión.
         </Alert>
       );
     } else if (log === "Failed") {
       setAlertComponent(
-        <Alert severity="error" sx={{ width: 500, mt: 2 }}>
-          ¡Algo salió mal! Vuelve a intentarlo.
+        <Alert severity="error" sx={{ width: 500, mt: 2, '*': { width: "auto" }  }}>
+          ¡Usuario o DNI ya registrado! Si ya estás registrado inicia sesión.
         </Alert>
       );
     }
@@ -220,9 +220,6 @@ const UserCreate = ({ employee }) => {
             {errors.postEmployee?.message}
           </Typography>
 
-          <Typography textAlign={"left"} sx={{ mt: 2 }}>
-            Fecha de nacimiento
-          </Typography>
           <TextField
             id="birthdate"
             name="birthdate"
@@ -230,6 +227,7 @@ const UserCreate = ({ employee }) => {
             {...register("birthdate")}
             sx={{ m: 1 }}
             error={errors.birthdate?.message}
+            helperText="Intoduce tu fecha de nacimiento"
           />
           <Typography textAlign={"center"}>
             {errors.birthdate?.message}

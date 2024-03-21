@@ -56,18 +56,19 @@ export const CreateUpdateEmployee = () => {
 
             EmployeeService.updateEmployee(employee, id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
                 if (r) {
-                    document.getElementById("dni").value = "";
-                    document.getElementById("firstName").value = "";
-                    document.getElementById("lastName").value = "";
-                    document.getElementById("address").value = "";
-                    document.getElementById("nationality").value = "";
-                    document.getElementById("username").value = "";
-                    document.getElementById("password").value = "";
-                    document.getElementById("email").value = "";
-                    document.getElementById("cellphone").value = "";
+                    setValue("dni", "");
+                    setValue("firstName", "");
+                    setValue("lastName", "");
+                    setValue("address", "");
+                    setValue("nationality", "");
+                    setValue("username", "");
+                    setValue("password", "");
+                    setValue("email", "");
+                    setValue("cellphone", "");
                     setRoles('Employee');
-                    document.getElementById("job").value = "";
-                    document.getElementById("income").value = "";
+                    setValue("role", "Employee");
+                    setValue("job", "");
+                    setValue("income", "");
                     setLog("Success");
                 } else setLog("Failed")
             }).catch(e => console.log(e));
@@ -94,21 +95,22 @@ export const CreateUpdateEmployee = () => {
 
             EmployeeService.createEmployee(employee, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
                 if (r.data.value) {
-                    document.getElementById("dni").value = "";
-                    document.getElementById("firstName").value = "";
-                    document.getElementById("lastName").value = "";
-                    document.getElementById("address").value = "";
-                    document.getElementById("nationality").value = "";
-                    document.getElementById("username").value = "";
-                    document.getElementById("password").value = "";
-                    document.getElementById("email").value = "";
-                    document.getElementById("cellphone").value = "";
+                    setValue("dni", "");
+                    setValue("firstName", "");
+                    setValue("lastName", "");
+                    setValue("address", "");
+                    setValue("nationality", "");
+                    setValue("username", "");
+                    setValue("password", "");
+                    setValue("email", "");
+                    setValue("cellphone", "");
                     setRoles('Employee');
-                    document.getElementById("job").value = "";
-                    document.getElementById("income").value = "";
+                    setValue("role", "Employee");
+                    setValue("job", "");
+                    setValue("income", "");
                     setLog("Success");
                 } else setLog("Failed")
-            }).catch(e => handleOpen());
+            }).catch(e => console.log(e));
         }
     }
 
@@ -130,20 +132,20 @@ export const CreateUpdateEmployee = () => {
         EmployeeService.createEmployeeAndUpdateUser(employee, data.dni, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
             console.log(r);
             if (r) {
-                document.getElementById("dni").value = "";
-                document.getElementById("firstName").value = "";
-                document.getElementById("lastName").value = "";
-                document.getElementById("address").value = "";
-                document.getElementById("nationality").value = "";
-                document.getElementById("username").value = "";
-                document.getElementById("password").value = "";
-                document.getElementById("email").value = "";
-                document.getElementById("cellphone").value = "";
-                setRoles('Employee');
-                document.getElementById("job").value = "";
-                document.getElementById("income").value = "";
-                setLog("Success");
-                
+                setValue("dni", "");
+                    setValue("firstName", "");
+                    setValue("lastName", "");
+                    setValue("address", "");
+                    setValue("nationality", "");
+                    setValue("username", "");
+                    setValue("password", "");
+                    setValue("email", "");
+                    setValue("cellphone", "");
+                    setRoles('Employee');
+                    setValue("role", "Employee");
+                    setValue("job", "");
+                    setValue("income", "");
+                setLog("Success");   
             } else setLog("Failed")
         }).catch(e => console.log(e));
     }
@@ -173,31 +175,19 @@ export const CreateUpdateEmployee = () => {
 
         if (id) {
             EmployeeService.getEmployeeById(id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
-                document.getElementById("dni").value = r.data.person.dni;
                 setValue("dni", r.data.person.dni);
-                document.getElementById("firstName").value = r.data.person.firstName;
                 setValue("firstName", r.data.person.firstName);
-                document.getElementById("lastName").value = r.data.person.lastName;
                 setValue("lastName", r.data.person.lastName);
-                document.getElementById("birthdate").value = r.data.person.birthdate;
                 setValue("birthdate", r.data.person.birthdate);
-                document.getElementById("address").value = r.data.person.address;
                 setValue("address", r.data.person.address);
-                document.getElementById("nationality").value = r.data.person.nationality;
                 setValue("nationality", r.data.person.nationality);
-                document.getElementById("username").value = r.data.person.user.username;
                 setValue("username", r.data.person.user.username);
-                document.getElementById("password").value = r.data.person.user.password;
                 setValue("password", r.data.person.user.password);
-                document.getElementById("email").value = r.data.person.user.email;
                 setValue("email", r.data.person.user.email);
-                document.getElementById("cellphone").value = r.data.person.user.cellphone;
                 setValue("cellphone", r.data.person.user.cellphone);
                 setRoles(r.data.person.user.role);
                 setValue("role", r.data.person.user.role);
-                document.getElementById("job").value = r.data.job;
                 setValue("job", r.data.job);
-                document.getElementById("income").value = r.data.income;
                 setValue("income", r.data.income);
             }).catch(e => console.log(e));
         }
@@ -257,6 +247,7 @@ export const CreateUpdateEmployee = () => {
                                 variant="filled"
                                 type="text"
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 disabled={id ? true : false}
                                 {...register("dni")}
                                 error={errors.dni?.message}
@@ -275,6 +266,7 @@ export const CreateUpdateEmployee = () => {
                                 variant="filled"
                                 {...register("firstName")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.firstName?.message}
                                 helperText={errors.firstName?.message}
                                 sx={{
@@ -292,6 +284,7 @@ export const CreateUpdateEmployee = () => {
                                 variant="filled"
                                 {...register("lastName")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.lastName?.message}
                                 helperText={errors.lastName?.message}
                                 sx={{
@@ -309,6 +302,7 @@ export const CreateUpdateEmployee = () => {
                                     type="date"
                                     variant="filled"
                                     inputProps={{ style: { paddingTop: "17px", paddingBottom: "16px" } }}
+                                    InputLabelProps={{ shrink: true }}
                                     {...register("birthdate")}
                                     InputProps={{ disableUnderline: true }}
                                     error={errors.birthdate?.message}
@@ -327,6 +321,7 @@ export const CreateUpdateEmployee = () => {
                                 variant="filled"
                                 {...register("address")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.address?.message}
                                 helperText={errors.address?.message}
                                 sx={{
@@ -345,6 +340,7 @@ export const CreateUpdateEmployee = () => {
                                 type="text"
                                 {...register("nationality")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.nationality?.message}
                                 helperText={errors.nationality?.message}
                                 sx={{
@@ -363,6 +359,7 @@ export const CreateUpdateEmployee = () => {
                                 type="text"
                                 {...register("username")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.username?.message}
                                 helperText={errors.username?.message}
                                 sx={{
@@ -379,6 +376,7 @@ export const CreateUpdateEmployee = () => {
                                 variant="filled"
                                 {...register("password")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.password?.message}
                                 helperText={errors.password?.message}
                                 sx={{
@@ -396,6 +394,7 @@ export const CreateUpdateEmployee = () => {
                                 variant="filled"
                                 {...register("email")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.email?.message}
                                 helperText={errors.email?.message}
                                 sx={{
@@ -414,6 +413,7 @@ export const CreateUpdateEmployee = () => {
                                 type="text"
                                 {...register("cellphone")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.cellphone?.message}
                                 helperText={errors.cellphone?.message}
                                 sx={{
@@ -477,6 +477,7 @@ export const CreateUpdateEmployee = () => {
                                 type="text"
                                 {...register("job")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.job?.message}
                                 helperText={errors.job?.message}
                                 sx={{
@@ -493,6 +494,7 @@ export const CreateUpdateEmployee = () => {
                                 variant="filled"
                                 {...register("income")}
                                 InputProps={{ disableUnderline: true }}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.income?.message}
                                 helperText={errors.income?.message}
                                 sx={{

@@ -10,8 +10,8 @@ import PackageService from "../../services/PackageService";
 export const ReadPackages = () => {
     const [data, setData] = useState([]);
 
-    const deleteService = (id) => {
-        //ServiceConnection.deleteService(id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => listOfServices()).catch(e => console.log(e));
+    const deletePackage = (id) => {
+        PackageService.deletePackage(id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => listOfPackages()).catch(e => console.log(e));
     }
 
     const listOfPackages = () => {
@@ -71,7 +71,7 @@ export const ReadPackages = () => {
                                             </TableCell>
                                             <TableCell sx={{ background: "#FFF", border: "1px solid #BBB", minWidth: 200 }}>
                                                 <Link to={`/employee/update-package/${row.packageInfo.code}`} className="btnModify" style={{padding: "3% 34%"}}>Modificar</Link>
-                                                <button className="btnDelete" style={{marginTop: 15}} onClick={() => deleteService(row.code)}>Eliminar</button>
+                                                <button className="btnDelete" style={{marginTop: 15}} onClick={() => deletePackage(row.packageInfo.code)}>Eliminar</button>
                                             </TableCell>
                                         </TableRow>
                                     ))}

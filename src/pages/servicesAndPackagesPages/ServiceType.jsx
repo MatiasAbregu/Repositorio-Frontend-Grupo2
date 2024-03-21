@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import HomeServiceCard from "../../components/ServiceCard";
+import ServiceCard from "../../components/ServiceCard.jsx";
 import { Container, Grid } from "@mui/material";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../../components/Header.jsx";
+import Footer from "../../components/Footer.jsx";
 import ServiceConnection from "../../services/ServiceConnection.js"
 
 export const ServiceType = ({type}) => {
@@ -36,7 +36,7 @@ export const ServiceType = ({type}) => {
       key={data.id}
       sx={{ mt: 2, display: "flex", justifyContent: "center", p: 1 }}
     >
-      <HomeServiceCard key={data.id} info={data} />
+      <ServiceCard key={data.id} info={data} />
     </Grid>
   ));
   return (

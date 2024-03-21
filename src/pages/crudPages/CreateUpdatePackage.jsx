@@ -45,11 +45,11 @@ export const CreateUpdatePackage = () => {
 
             console.log(packageWithServices);
 
-            // ServiceConnection.updateService(packageWithServices, id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
-            //     if (r) {
-            //         setLog("Success");
-            //     } else setLog("Failed")
-            // }).catch(e => console.log(e));
+            PackageService.updatePackage(id, packageWithServices, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
+                if (r) {
+                    setLog("Success");
+                } else setLog("Failed")
+            }).catch(e => console.log(e));
         } else {
             packageWithServices = {
                 packageInfo: {
@@ -158,7 +158,7 @@ export const CreateUpdatePackage = () => {
                                     type="text"
                                     {...register("name")}
                                     InputProps={{ disableUnderline: true }}
-                                    InputLabelProps={{ shrink: Boolean(getValues("name")) }}
+                                    InputLabelProps={{ shrink: true }}
                                     error={errors.name?.message}
                                     helperText={errors.name?.message}
                                     sx={{

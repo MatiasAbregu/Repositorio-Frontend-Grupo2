@@ -14,6 +14,14 @@ class PackageService {
         return axios.post("http://localhost:8080/auth/packages", data, {headers: {Authorization: `Bearer ${token}`}});
     }
 
+    updatePackage(id, data, token){
+        return axios.put("http://localhost:8080/auth/packages/" + id, data, {headers: {Authorization: `Bearer ${token}`}});
+    }
+
+    deletePackage(id, token) {
+        return axios.delete("http://localhost:8080/auth/packages/" + id, {headers: {Authorization: `Bearer ${token}`}});
+    }
+
 }
 
 export default new PackageService();

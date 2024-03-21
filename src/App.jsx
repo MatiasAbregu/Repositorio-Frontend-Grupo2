@@ -1,8 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/home/Home";
-import { ServiceType } from "./pages/servicesPages/ServiceType";
-import { ServiceIdPage } from "./pages/servicesPages/ServiceIdPage";
+import { ServiceType } from "./pages/servicesAndPackagesPages/ServiceType";
+import { ServiceIdPage } from "./pages/servicesAndPackagesPages/ServiceIdPage";
+import { PackagePage } from "./pages/servicesAndPackagesPages/PackagePage";
 import UserCreate from "./pages/user/UserCreate";
 import UserLogin from "./pages/user/UserLogin";
 import { HomeEmployee } from "./pages/home/HomeEmployee";
@@ -13,6 +14,12 @@ import { ReadEmployees } from "./pages/crudPages/ReadEmployees";
 import { CreateUpdateEmployee } from "./pages/crudPages/CreateUpdateEmployee";
 import { ReadPackages } from "./pages/crudPages/ReadPackages";
 import { CreateUpdatePackage } from "./pages/crudPages/CreateUpdatePackage";
+import { ReadSales } from "./pages/crudPages/ReadSales";
+import { CreateUpdateSales } from "./pages/crudPages/CreateUpdateSales";
+import { ReadClient } from "./pages/crudPages/ReadClient";
+import { ReadClientById } from "./pages/crudPages/ReadClientById";
+import { PackageIdPage } from "./pages/servicesAndPackagesPages/PackageIdPage";
+import { PurchaseProduct } from "./pages/servicesAndPackagesPages/PurchaseProduct";
 
 function App() {
   return (
@@ -27,6 +34,7 @@ function App() {
         <Route path="/service/train-tickets" element={<ServiceType type={"Trenes"} /> } />
         <Route path="/service/excursion" element={<ServiceType type={"Excursiones"} /> } />
         <Route path="/service/events-tickets" element={<ServiceType type={"Eventos"} /> } />
+        <Route path="/packages" element={<PackagePage /> } />
 
         <Route path="/service/hotels/:id" element={<ServiceIdPage /> } />     
         <Route path="/service/car-rent/:id" element={<ServiceIdPage /> } />
@@ -35,6 +43,10 @@ function App() {
         <Route path="/service/train-tickets/:id" element={<ServiceIdPage /> } />
         <Route path="/service/excursion/:id" element={<ServiceIdPage /> } />     
         <Route path="/service/events-tickets/:id" element={<ServiceIdPage /> } />  
+        <Route path="/packages/:id" element={<PackageIdPage /> } /> 
+
+        <Route path="/purchase/service/:id" element={<PurchaseProduct typeProduct={"service"}/> }/>
+        <Route path="/purchase/package/:id" element={<PurchaseProduct typeProduct={"package"}/> } />
 
         <Route path="/user/register" element={<UserCreate />} />
         <Route path="/user/login" element={<UserLogin />} />
@@ -50,6 +62,11 @@ function App() {
         <Route path="/employee/packages" element={<ReadPackages />} />
         <Route path="/employee/create-package" element={<CreateUpdatePackage />} />
         <Route path="/employee/update-package/:id" element={<CreateUpdatePackage />} />
+        <Route path="/employee/sales" element={<ReadSales />} />
+        <Route path="/employee/create-sale" element={<CreateUpdateSales />} />
+        <Route path="/employee/update-sale/:id" element={<CreateUpdateSales />} />
+        <Route path="/employee/clients" element={<ReadClient />} />
+        <Route path="/employee/clients/:id" element={<ReadClientById />} />
 
       </Routes>
     </BrowserRouter>

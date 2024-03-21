@@ -3,6 +3,7 @@ import HomeServiceCard from "../../components/HomeServiceCard";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { Link } from "react-router-dom";
+import { AES, enc } from "crypto-js";
 
 export const Home = () => {
 
@@ -65,7 +66,7 @@ export const Home = () => {
     }
   ];
 
-  const serviceForHeach = serviceList.map((data) => (
+  const serviceForEach = serviceList.map((data) => (
     <Grid
       item
       sm={6}
@@ -104,7 +105,7 @@ export const Home = () => {
       >
         <Box sx={{ backgroundColor: "#5e936564", paddingBottom: "2%" }}>
           <Container>
-            <Grid container>{serviceForHeach}</Grid>
+            <Grid container>{serviceForEach}</Grid>
           </Container>
         </Box>
       </Box>

@@ -39,7 +39,7 @@ export const HomeEmployee = () => {
     },
   ];
 
-  const serviceForHeach = serviceList.map((data) => (
+  const serviceForEach = serviceList.map((data) => (
     <Grid
       item
       sm={6}
@@ -84,7 +84,7 @@ export const HomeEmployee = () => {
           >
             <Box sx={{ backgroundColor: "#5e936564", padding: "3% 0 4% 0" }}>
               <Container>
-                <Grid container>{serviceForHeach}</Grid>
+                <Grid container>{serviceForEach}</Grid>
               </Container>
             </Box>
           </Box>

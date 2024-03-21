@@ -139,6 +139,7 @@ export const CreateUpdateService = () => {
                                 type="text"
                                 {...register("name")}
                                 InputProps={{disableUnderline: true}}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.name?.message}
                                 helperText={errors.name?.message}
                                 sx={{
@@ -156,6 +157,7 @@ export const CreateUpdateService = () => {
                                 placeholder="Solo url, ej: https://images.unsplash.com/photo-1606663889134-b1dedb5ed8b7?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                 {...register("img")}
                                 InputProps={{disableUnderline: true}}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.img?.message}
                                 helperText={errors.img?.message}
                                 sx={{
@@ -173,6 +175,7 @@ export const CreateUpdateService = () => {
                                 variant="filled"
                                 {...register("destination")}
                                 InputProps={{disableUnderline: true}}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.destination?.message}
                                 helperText={errors.destination?.message}
                                 sx={{
@@ -257,6 +260,7 @@ export const CreateUpdateService = () => {
                                 type="text"
                                 {...register("price")}
                                 InputProps={{disableUnderline: true}}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.price?.message}
                                 helperText={errors.price?.message}
                                 sx={{
@@ -275,6 +279,7 @@ export const CreateUpdateService = () => {
                                 rows={7}
                                 {...register("desc")}
                                 InputProps={{disableUnderline: true}}
+                                InputLabelProps={{ shrink: true }}
                                 error={errors.desc?.message}
                                 helperText={errors.desc?.message}
                                 sx={{

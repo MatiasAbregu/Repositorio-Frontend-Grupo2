@@ -15,11 +15,11 @@ import { jwtDecode } from 'jwt-decode';
 import { AES, enc } from "crypto-js";
 
 const styles = {
-  boxLogoBig: { display: { xs: "none", md: "flex" }, width: 200 },
+  boxLogoBig: { display: { xs: "none", md: "flex" }, width: 200, mt: 1 },
   logoTextBig: {
     mr: 2,
     display: { xs: "none", md: "flex" },
-    fontFamily: "monospace",
+    fontFamily: "Protest Revolution",
     fontWeight: 700,
     letterSpacing: ".3rem",
     color: "inherit",

@@ -3,6 +3,10 @@ import axios from "axios";
 class EmployeeService {
 
     getAllEmployees(token){
+        return axios.get("http://localhost:8080/auth/get-employees", {headers: {Authorization: `Bearer ${token}`}});
+    }
+
+    getAllEmployeesWithAllInfo(token){
         return axios.get("http://localhost:8080/auth/employees", {headers: {Authorization: `Bearer ${token}`}});
     }
 
