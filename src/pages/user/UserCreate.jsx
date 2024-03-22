@@ -65,7 +65,7 @@ const UserCreate = () => {
     } else if (log === "Failed") {
       setAlertComponent(
         <Alert severity="error" sx={{ width: 500, mt: 2, '*': { width: "auto" } }}>
-          ¡Usuario o DNI ya registrado! Si ya estás registrado inicia sesión.
+          ¡DNI ya registrado! Si ya estás registrado inicia sesión.
         </Alert>
       );
     }
