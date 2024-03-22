@@ -11,19 +11,34 @@ import dayjs from "dayjs";
 import ServiceConnection from "../../services/ServiceConnection";
 import { useParams } from "react-router-dom";
 
+/**
+ * El componente `CreateUpdateService` permite a los administradores y empleados crear o actualizar servicios.
+ * @returns {JSX.Element} Componente CreateUpdateService.
+ */
 export const CreateUpdateService = () => {
 
+    // Estado para almacenar el tipo de servicio
     const [typeS, setTypeS] = useState('Hoteles');
+
+    // Estado para almacenar mensajes de registro o actualización exitosa o fallida
     const [log, setLog] = useState("");
+
+    // Estado para el componente de alerta
     const [alertComponent, setAlertComponent] = useState(null);
+
+    // Obtener el ID del servicio de los parámetros de la URL
     const { id } = useParams()
+
+    // React Hook Form para manejar el formulario y la validación
     const { register, handleSubmit, setValue, formState: { errors } } = useForm({ resolver: yupResolver(serviceValidationYup()) });
 
+    // Función para manejar el cambio en el tipo de servicio
     const handleChange = (e) => {
         setTypeS(e.target.value);
         setValue("type", e.target.value, { shouldValidate: true })
     }
 
+    // Función para crear o actualizar un servicio
     const onSubmit = (data) => {
         data.date = dayjs(data.date).format("YYYY-MM-DD");
         let service;
@@ -42,12 +57,13 @@ export const CreateUpdateService = () => {
 
             ServiceConnection.updateService(service, id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
                 if (r) {
-                    document.getElementById("name").value = "";
-                    document.getElementById("img").value = "";
-                    document.getElementById("destination").value = "";
+                    setValue("name", "");
+                    setValue("img", "");
+                    setValue("destination", "");
                     setTypeS('Hoteles');
-                    document.getElementById("price").value = "";
-                    document.getElementById("desc").value = "";
+                    setValue("type", "Hoteles");
+                    setValue("price", "");
+                    setValue("desc", "");
                     setLog("Success");
                 } else setLog("Failed")
             }).catch(e => console.log(e));
@@ -64,18 +80,20 @@ export const CreateUpdateService = () => {
 
             ServiceConnection.createService(service, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
                 if (r.data) {
-                    document.getElementById("name").value = "";
-                    document.getElementById("img").value = "";
-                    document.getElementById("destination").value = "";
+                    setValue("name", "");
+                    setValue("img", "");
+                    setValue("destination", "");
                     setTypeS('Hoteles');
-                    document.getElementById("price").value = "";
-                    document.getElementById("desc").value = "";
+                    setValue("type", "Hoteles");
+                    setValue("price", "");
+                    setValue("desc", "");
                     setLog("Success");
                 } else setLog("Failed")
             }).catch(e => console.log(e));
         }
     }
 
+    // Efecto para mostrar alertas después de la creación o actualización exitosa o fallida
     useEffect(() => {
         if (log === "Success") {
             if (id) {
@@ -120,10 +138,12 @@ export const CreateUpdateService = () => {
 
     }, [log]);
 
+    // Verifica si existe un token, sino lo redirecciona a iniciar sesión
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin" || rol.role == "Employee") {
             return (
                 <>

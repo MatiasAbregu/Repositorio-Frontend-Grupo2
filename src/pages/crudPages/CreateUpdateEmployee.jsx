@@ -11,23 +11,43 @@ import dayjs from "dayjs";
 import EmployeeService from "../../services/EmployeeService";
 import { useParams } from "react-router-dom";
 
+/**
+ * El componente `CreateUpdateEmployee` permite a los administradores crear o actualizar empleados.
+ * @returns {JSX.Element} Componente CreateUpdateEmployee.
+ */
 export const CreateUpdateEmployee = () => {
 
+    // Estado para almacenar el rol de usuario
     const [roles, setRoles] = useState('Employee');
-    const [log, setLog] = useState("");
-    const [alertComponent, setAlertComponent] = useState(null);
-    const { id } = useParams()
-    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({ resolver: yupResolver(employeeValidationYup()) });
-    const [open, setOpen] = React.useState(false);
 
+    // Estado para almacenar mensajes de registro o actualización exitosa o fallida
+    const [log, setLog] = useState("");
+
+    // Estado para el componente de alerta
+    const [alertComponent, setAlertComponent] = useState(null);
+
+    // Obtener el ID del servicio de los parámetros de la URL
+    const { id } = useParams();
+
+    // React Hook Form para manejar el formulario y la validación
+    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({ resolver: yupResolver(employeeValidationYup()) });
+
+    // Estado para manejar el modal
+    const [open, setOpen] = useState(false);
+
+    // Función para abrir el modal
     const handleOpen = () => setOpen(true);
+
+    // Función para cerrar el modal
     const handleClose = () => setOpen(false);
 
+    // Función para cambiar el rol
     const handleChange = (e) => {
         setRoles(e.target.value);
         setValue("role", e.target.value, { shouldValidate: true })
     }
 
+    // Función para crear o actualizar un empleado
     const onSubmit = (data) => {
         data.birthdate = dayjs(data.birthdate).format("YYYY-MM-DD");
         let employee;
@@ -114,6 +134,7 @@ export const CreateUpdateEmployee = () => {
         }
     }
 
+    // Función para crear un empleado vincunlandolo con una persona existente
     const linkUserWithEmployee = (data) => {
         handleClose();
         data.birthdate = dayjs(data.birthdate).format("YYYY-MM-DD");
@@ -129,27 +150,28 @@ export const CreateUpdateEmployee = () => {
             income: data.income
         };
 
-        EmployeeService.createEmployeeAndUpdateUser(employee, data.dni, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
+        EmployeeService.createEmployeeAndLinkWitExistPerson(employee, data.dni, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
             console.log(r);
             if (r) {
                 setValue("dni", "");
-                    setValue("firstName", "");
-                    setValue("lastName", "");
-                    setValue("address", "");
-                    setValue("nationality", "");
-                    setValue("username", "");
-                    setValue("password", "");
-                    setValue("email", "");
-                    setValue("cellphone", "");
-                    setRoles('Employee');
-                    setValue("role", "Employee");
-                    setValue("job", "");
-                    setValue("income", "");
-                setLog("Success");   
+                setValue("firstName", "");
+                setValue("lastName", "");
+                setValue("address", "");
+                setValue("nationality", "");
+                setValue("username", "");
+                setValue("password", "");
+                setValue("email", "");
+                setValue("cellphone", "");
+                setRoles('Employee');
+                setValue("role", "Employee");
+                setValue("job", "");
+                setValue("income", "");
+                setLog("Success");
             } else setLog("Failed")
         }).catch(e => console.log(e));
     }
 
+    // Efecto para mostrar alertas después de la creación o actualización exitosa o fallida
     useEffect(() => {
         if (log === "Success") {
             if (id) {
@@ -193,10 +215,12 @@ export const CreateUpdateEmployee = () => {
         }
     }, [log]);
 
+    // Verifica si existe un token, sino lo redirecciona a iniciar sesión
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin") {
             return (
                 <>

@@ -14,6 +14,7 @@ import ServiceIconList from "./ServiceIconList";
 import { jwtDecode } from 'jwt-decode';
 import { AES, enc } from "crypto-js";
 
+// Estilos, algunos componentes se modificaron con estos y algunos otros se les complemento con SX
 const styles = {
   boxLogoBig: { display: { xs: "none", md: "flex" }, width: 200, mt: 1 },
   logoTextBig: {
@@ -56,25 +57,39 @@ const styles = {
   },
 };
 
+/**
+ * Componente Header que representa la barra de navegación superior de la aplicación.
+ * @param {object} props - Propiedades del componente.
+ * @param {number} props.variant - Variante del encabezado:
+ * 1: Encabezado con todos los servicios, 2: Encabezado para empleados, 3: Encabezado sin iconos.
+ * @returns {JSX.Element} Elemento JSX que representa el encabezado.
+ */
 export default function Header({ variant }) {
+
+  // Estado para manejar el menú de usuario
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  // Función para abrir el menú de usuario
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
+  // Función para cerrar el menú de usuario
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  // Configuración inicial de los elementos del menú de usuario
   let settings = [
     { name: "Registrarse", link: "/user/register" },
     { name: "Ingresar", link: "/user/login" },
   ];
 
+  // En caso de existir un username (O sea, inicio sesión) se cambiara el menú acorde a su rol.
   if (sessionStorage.getItem('username')) {
     settings = settings.filter(s => s.name !== "Ingresar" && s.name !== "Registrarse");
 
+    // Aquí se validará su rol y se le dará acceso al apartado de administración o no.
     if (sessionStorage.getItem('token')) {
       try {
         const decryptToken = AES.decrypt(sessionStorage.getItem('token'), "patito");
@@ -88,15 +103,20 @@ export default function Header({ variant }) {
     settings.push({ name: "Cerrar sesión", link: "/logout" });
   }
 
+  // Renderizado del componente según la variante 
   if (variant == 1) {
     return (
       <>
         <AppBar position="static" sx={{ backgroundColor: "#64aad3" }}>
           <Container maxWidth="xl">
             <Toolbar disableGutters>
+
+              {/* Logo */}
               <Box sx={styles.boxLogoBig}>
                 <img src="/travelskyLogo.png" />
               </Box>
+
+              {/* Texto del logo */}
               <Typography
                 variant="h6"
                 noWrap
@@ -107,12 +127,14 @@ export default function Header({ variant }) {
                 TRAVSKY
               </Typography>
 
+              {/* Logo pequeño */}
               <Box sx={styles.smallRender}>
                 <Box sx={styles.boxLogoSmall}>
                   <img src="/travelskyLogo.png" />
                 </Box>
               </Box>
 
+              {/* Texto del logo pequeño */}
               <Typography
                 variant="h6"
                 noWrap
@@ -122,6 +144,8 @@ export default function Header({ variant }) {
               >
                 TRAVSKY
               </Typography>
+
+              {/* Avatar y menú de usuario */}
               <Box sx={styles.userLogoBox}>
                 <Tooltip>
                   <IconButton
@@ -131,6 +155,8 @@ export default function Header({ variant }) {
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                   </IconButton>
                 </Tooltip>
+
+                {/* Menú */}
                 <Menu
                   sx={{ mt: 5, width: 300 }}
                   id="menu-appbar"
@@ -147,6 +173,8 @@ export default function Header({ variant }) {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
+
+                  {/* En caso de haber iniciado sesión dar mensaje de bienvenida */}
                   {sessionStorage.getItem('username') && (
                     <MenuItem sx={{ "&:hover": { backgroundColor: "#FFF", cursor: "default" } }}>
                       <Typography variant="body1" textAlign="center" >
@@ -169,6 +197,7 @@ export default function Header({ variant }) {
             </Toolbar>
           </Container>
         </AppBar>
+        {/* Iconos del header */}
         <ServiceIconList></ServiceIconList>
       </>
     );
@@ -177,9 +206,13 @@ export default function Header({ variant }) {
       <AppBar position="static" sx={{ backgroundColor: "#64aad3" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+
+            {/* Logo */}
             <Box sx={styles.boxLogoBig}>
               <img src="/travelskyLogo.png" />
             </Box>
+
+            {/* Texto del logo */}
             <Typography
               variant="h6"
               noWrap
@@ -190,12 +223,14 @@ export default function Header({ variant }) {
               TRAVSKY
             </Typography>
 
+            {/* Logo pequeño */}
             <Box sx={styles.smallRender}>
               <Box sx={styles.boxLogoSmall}>
                 <img src="/travelskyLogo.png" />
               </Box>
             </Box>
 
+            {/* Texto del logo pequeño */}
             <Typography
               variant="h6"
               noWrap
@@ -205,6 +240,8 @@ export default function Header({ variant }) {
             >
               TRAVSKY
             </Typography>
+
+            {/* Avatar y menú del usuario */}
             <Box sx={styles.userLogoBox}>
               <Tooltip>
                 <IconButton
@@ -214,6 +251,8 @@ export default function Header({ variant }) {
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
+
+              {/* Menú */}
               <Menu
                 sx={{ mt: 5, width: 300 }}
                 id="menu-appbar"
@@ -230,6 +269,7 @@ export default function Header({ variant }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                {/* En caso de haber iniciado sesión dar mensaje de bienvenida */}
                 {sessionStorage.getItem('username') && (
                   <MenuItem sx={{ "&:hover": { backgroundColor: "#FFF", cursor: "default" } }}>
                     <Typography variant="body1" textAlign="center" >
@@ -252,6 +292,7 @@ export default function Header({ variant }) {
           </Toolbar>
         </Container>
       </AppBar>
+      {/* Iconos del lado de administración */}
       <ServiceIconList type={1}></ServiceIconList>
     </>);
   } else {
@@ -260,9 +301,13 @@ export default function Header({ variant }) {
         <AppBar position="static" sx={{ backgroundColor: "#64aad3", height: 80 }}>
           <Container maxWidth="xl">
             <Toolbar disableGutters>
+
+              {/* Logo */}
               <Box sx={styles.boxLogoBig}>
                 <img src="/travelskyLogo.png" />
               </Box>
+
+              {/* Texto del logo */}
               <Typography
                 variant="h6"
                 noWrap
@@ -273,12 +318,14 @@ export default function Header({ variant }) {
                 TRAVSKY
               </Typography>
 
+              {/* Logo pequeño */}
               <Box sx={styles.smallRender}>
                 <Box sx={styles.boxLogoSmall}>
                   <img src="/travelskyLogo.png" />
                 </Box>
               </Box>
 
+              {/* Texto del logo pequeño */}
               <Typography
                 variant="h6"
                 noWrap
@@ -288,6 +335,8 @@ export default function Header({ variant }) {
               >
                 TRAVSKY
               </Typography>
+
+              {/* Avatar y menú del usuario */}
               <Box sx={styles.userLogoBox}>
                 <Tooltip>
                   <IconButton
@@ -313,6 +362,7 @@ export default function Header({ variant }) {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
+                  {/* En caso de haber iniciado sesión dar mensaje de bienvenida */}
                   {sessionStorage.getItem('username') && (
                     <MenuItem sx={{ "&:hover": { backgroundColor: "#FFF", cursor: "default" } }}>
                       <Typography variant="body1" textAlign="center" >

@@ -8,10 +8,11 @@ import Footer from "../../components/Footer";
 import UserService from "../../services/UserService";
 import { AES } from 'crypto-js'
 
-const UserCreate = () => {
+// Componente UserLogin que representa la página de inicio de sesión de la aplicación.
+const UserLogin = () => {
 
+  // Esquema de validación YUP
   const schema = yup.object().shape({
-
     username: yup
       .string()
       .required("Debe ingresar un valor."),
@@ -20,6 +21,7 @@ const UserCreate = () => {
       .required("Debe ingresar un valor."),
   });
 
+  // Todas las métodos de YUP a usar + Hook useForm para validar
   const {
     register,
     handleSubmit,
@@ -28,9 +30,13 @@ const UserCreate = () => {
     resolver: yupResolver(schema),
   });
 
+  // Mensaje en caso de: Error.
   const [alertMsg, setAlertMsg] = useState("");
+
+  // Componente para dar avisa acorde al log.
   const [alertComponent, setAlertComponent] = useState(null);
 
+  // Función dónde se iniciará sesión en la API al usuario
   const onSubmit = (data) => {
     UserService.logIn(data).then(res => {
       if (res.data.value) {
@@ -41,9 +47,10 @@ const UserCreate = () => {
     }).catch(e => setAlertMsg("Error"));
   };
 
+  // UseEffect para mostrar el mensaje en el componente.
   useEffect(() => {
     console.log(alertMsg);
-    if(alertMsg === "Error"){
+    if (alertMsg === "Error") {
       setAlertComponent(
         <Alert severity="error" sx={{ width: 500, mt: 2 }}>
           Usuario o contraseña incorrectos.
@@ -52,9 +59,11 @@ const UserCreate = () => {
     }
   }, [alertMsg]);
 
+  // Renderizado de la página
   return (
     <>
       <Header />
+      {/* Contenedor */}
       <Container
         sx={{
           alignItems: "center",
@@ -64,7 +73,9 @@ const UserCreate = () => {
           mb: 4
         }}
       >
-        {alertComponent}
+        {alertComponent /* Componente mensaje de alerta */}
+
+        {/* Formulario */}
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -80,6 +91,8 @@ const UserCreate = () => {
         >
           <Typography variant="h5" sx={{ textAlign: "center", color: "black" }}>Iniciar Sesión</Typography>
           <hr />
+
+          {/* Campo del nombre de usuario */}
           <TextField
             id="user"
             label="Usuario"
@@ -89,6 +102,8 @@ const UserCreate = () => {
             error={errors.username?.message}
           />
           <Typography textAlign={"center"}>{errors.username?.message}</Typography>
+
+          {/* Campo de la contraseña */}
           <TextField
             id="password"
             label="Contraseña"
@@ -99,9 +114,18 @@ const UserCreate = () => {
           />
           <Typography textAlign={"center"}>{errors.password?.message}</Typography>
 
-          <Button variant="contained" type="submit" sx={{ maxWidth: 300, mt: 4, color: "white", backgroundColor: "#ddabab", fontSize: 18, }}>
-            Ingresar
-          </Button>
+          {/* Boton submit */}
+          <Button variant="contained" type="submit"
+            sx={{
+              maxWidth: 300, mt: 4, color: "black", fontSize: 18,
+              backgroundColor: "transparent",
+              border: "2px solid lightgreen",
+              ':hover': {
+                border: "2px solid lightgreen",
+                backgroundColor: "lightgreen",
+                color: "white"
+              }
+            }}> Iniciar sesión </Button>
         </Box>
       </Container>
       <Footer />
@@ -109,4 +133,4 @@ const UserCreate = () => {
   );
 };
 
-export default UserCreate;
+export default UserLogin;

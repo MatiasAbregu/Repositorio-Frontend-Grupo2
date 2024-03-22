@@ -7,27 +7,38 @@ import { jwtDecode } from "jwt-decode";
 import ServiceConnection from '../../services/ServiceConnection';
 import { Link } from "react-router-dom";
 
+/**
+ * El componente `ReadServices` permite a los administradores y empleados ver y gestionar los servicios disponibles.
+ * @returns {JSX.Element} Componente ReadServices.
+ */
 export const ReadServices = () => {
+
+  // Estado para almacenar los datos de los servicios
   const [data, setData] = useState([]);
 
+   // Función para eliminar un servicio por id
   const deleteService = (id) => {
     ServiceConnection.deleteService(id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => listOfServices()).catch(e => console.log(e));
   }
 
+  // Función para obtener la lista de servicios
   const listOfServices = () => {
     ServiceConnection.getAllServicesDetailed(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(res => {
       setData(res.data)
     }).catch(e => console.log(e));
   }
 
+   // Cargar la lista de servicios
   useEffect(() => {
     listOfServices();
   }, []);
 
+  // Verifica si existe un token, sino lo redirecciona a iniciar sesión
   if (sessionStorage.getItem('token')) {
     const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
     const rol = jwtDecode(token.toString(enc.Utf8));
 
+    // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
     if (rol.role == "Admin" || rol.role == "Employee") {
       return (
         <>

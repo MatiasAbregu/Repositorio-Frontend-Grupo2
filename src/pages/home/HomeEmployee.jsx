@@ -6,9 +6,12 @@ import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { AES, enc } from "crypto-js";
 
+
+// Componente HomeEmployee que representa la página de inicial de la aplicación.
 export const HomeEmployee = () => {
 
-  const serviceList = [
+  // Lista de los tipos de administración de los datos
+  const adminDataList = [
     {
       id: 1,
       link: "/employee/services",
@@ -39,7 +42,8 @@ export const HomeEmployee = () => {
     },
   ];
 
-  const serviceForEach = serviceList.map((data) => (
+  // Mapea cada tipo de administración a un componente Grid que lo contiene en una tarjeta de servicio
+  const adminDataForEach = adminDataList.map((data) => (
     <Grid
       item
       sm={6}
@@ -66,14 +70,18 @@ export const HomeEmployee = () => {
     </Grid>
   ));
 
+  // Verifica si existe un token, sino lo redirecciona a iniciar sesión
   if (sessionStorage.getItem('token')) {
     const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
     const rol = jwtDecode(token.toString(enc.Utf8));
     
+    // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
     if (rol.role == "Admin" || rol.role == "Employee") {
       return (
         <>
           <Header variant={2} />
+
+          {/* Contenedor principal con imagen de fondo */}
           <Box
             sx={{
               backgroundImage:
@@ -82,9 +90,10 @@ export const HomeEmployee = () => {
               minHeight: "72vh"
             }}
           >
+            {/* Contenedor para mostrar los tipos de administración */}
             <Box sx={{ backgroundColor: "#5e936564", padding: "3% 0 4% 0" }}>
               <Container>
-                <Grid container>{serviceForEach}</Grid>
+                <Grid container>{adminDataForEach}</Grid>
               </Container>
             </Box>
           </Box>

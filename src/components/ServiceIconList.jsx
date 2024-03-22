@@ -11,11 +11,18 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import ContactsIcon from '@mui/icons-material/Contacts';
-
 import { Link } from "react-router-dom";
 DirectionsCarIcon;
 
+/**
+ * Componente que muestra una lista de iconos de servicios para el header.
+ * @param {object} props - Propiedades del componente.
+ * @param {string} props.type - Tipo de lista de iconos (puede ser 1: Para empleados u otro número: Para usuario).
+ * @returns {JSX.Element} Elemento JSX que representa la lista de iconos de servicios.
+ */
 const ServiceIconList = ({ type }) => {
+
+  // Estilos, se complementa con los de SX del componente
   const styles = {
     link: {
       textDecoration: "none",
@@ -32,6 +39,7 @@ const ServiceIconList = ({ type }) => {
   if (type == 1) {
     return (
       <>
+        {/* Grid padre que contiene iconos */}
         <Grid
           container
           spacing={1}
@@ -45,6 +53,7 @@ const ServiceIconList = ({ type }) => {
           }}
           columns={5}
         >
+          {/* Icono servicios */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/employee/services">
@@ -53,6 +62,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Icono empleados */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/employee/employees">
@@ -61,6 +72,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos paquetes */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/employee/packages">
@@ -69,6 +82,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos ventas */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/employee/sales">
@@ -77,6 +92,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos clientes */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/employee/clients">
@@ -91,6 +108,7 @@ const ServiceIconList = ({ type }) => {
   } else {
     return (
       <>
+        {/* Grid padre que contiene iconos */}
         <Grid
           container
           spacing={1}
@@ -104,6 +122,7 @@ const ServiceIconList = ({ type }) => {
           }}
           columns={8}
         >
+          {/* Iconos hoteles */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/service/hotels">
@@ -112,6 +131,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+          
+          {/* Iconos autos */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/service/car-rent">
@@ -120,6 +141,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos vuelos */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/service/plane-tickets">
@@ -128,6 +151,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos colectivos */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/service/bus-tickets">
@@ -136,6 +161,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos eventos */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/service/events-tickets">
@@ -144,6 +171,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos trenes */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/service/train-tickets">
@@ -152,6 +181,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos excursiones */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/service/excursion">
@@ -160,6 +191,8 @@ const ServiceIconList = ({ type }) => {
               </Link>
             </Box>
           </Grid>
+
+          {/* Iconos paquetes */}
           <Grid item xs={1}>
             <Box sx={styles.icon}>
               <Link style={styles.link} to="/packages">

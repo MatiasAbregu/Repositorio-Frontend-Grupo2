@@ -4,6 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 
+// Estilos, se complementa con los dados en SX
 const styles = {
   cardContent: {
     pl: 0,
@@ -14,6 +15,16 @@ const styles = {
     backgroundColor: "#EAE4FA",
   },
 };
+
+/**
+ * Componente que representa una tarjeta de servicio en la página de inicio o "Home".
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.info - Información del servicio a mostrar en la tarjeta.
+ * @param {string} props.info.img - URL de la imagen del servicio.
+ * @param {string} props.info.title - Título del servicio.
+ * @param {string} props.info.desc - Descripción del servicio.
+ * @returns {JSX.Element} Elemento JSX que representa la tarjeta de servicio.
+ */
 
 export default function HomeServiceCard({ info }) {
   return (

@@ -3,10 +3,11 @@ import HomeServiceCard from "../../components/HomeServiceCard";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { Link } from "react-router-dom";
-import { AES, enc } from "crypto-js";
 
+// Componente Home que representa la página de inicial de la aplicación.
 export const Home = () => {
 
+  // Lista de los tipos de servicios con sus datos
   const serviceList = [
     {
       id: 1,
@@ -66,6 +67,7 @@ export const Home = () => {
     }
   ];
 
+  // Mapea cada servicio a un componente Grid que contiene la tarjeta de servicio
   const serviceForEach = serviceList.map((data) => (
     <Grid
       item
@@ -96,6 +98,8 @@ export const Home = () => {
   return (
     <>
       <Header variant={1} />
+
+      {/* Contenedor principal con imagen de fondo */}
       <Box
         sx={{
           backgroundImage:
@@ -103,6 +107,8 @@ export const Home = () => {
           backgroundSize: "cover",
         }}
       >
+
+        {/* Contenedor para mostrar los servicios */}
         <Box sx={{ backgroundColor: "#5e936564", paddingBottom: "2%" }}>
           <Container>
             <Grid container>{serviceForEach}</Grid>

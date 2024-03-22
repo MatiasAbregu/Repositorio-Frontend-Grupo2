@@ -7,27 +7,38 @@ import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 import SalesService from "../../services/SalesService";
 
+/**
+ * El componente `ReadSales` permite a los administradores y empleados ver y gestionar las ventas realizadas.
+ * @returns {JSX.Element} Componente ReadSales.
+ */
 export const ReadSales = () => {
+
+    // Estado para almacenar los datos de las ventas
     const [data, setData] = useState([]);
 
+    // Función para eliminar una venta por un ID
     const deleteSale = (id) => {
         SalesService.deleteSale(id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => listOfServices()).catch(e => console.log(e));
     }
 
+    // Función para obtener la lista de ventas
     const listOfSales = () => {
         SalesService.getAllSales(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(res => {
             setData(res.data)
         }).catch(e => console.log(e));
     }
 
+    // Cargar la lista de ventas
     useEffect(() => {
         listOfSales();
     }, []);
 
+    // Verificar si hay un token de sesión activo
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin" || rol.role == "Employee") {
             return (
                 <>

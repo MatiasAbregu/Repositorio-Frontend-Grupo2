@@ -8,26 +8,33 @@ import { Link } from "react-router-dom";
 import PackageService from "../../services/PackageService";
 
 export const ReadPackages = () => {
+
+    // Estado para almacenar los datos de los paquetes
     const [data, setData] = useState([]);
 
+    // Función para eliminar un paquete por ID
     const deletePackage = (id) => {
         PackageService.deletePackage(id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => listOfPackages()).catch(e => console.log(e));
     }
 
+    // Función para obtener la lista de paquetes
     const listOfPackages = () => {
         PackageService.getAllPackages().then(res => {
             setData(res.data)
         }).catch(e => console.log(e));
     }
 
+    // Cargar la lista de paquetes
     useEffect(() => {
         listOfPackages();
     }, []);
 
+    // Verificar si hay un token de sesión activo
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin" || rol.role == "Employee") {
             return (
                 <>
@@ -70,8 +77,8 @@ export const ReadPackages = () => {
                                                 }
                                             </TableCell>
                                             <TableCell sx={{ background: "#FFF", border: "1px solid #BBB", minWidth: 200 }}>
-                                                <Link to={`/employee/update-package/${row.packageInfo.code}`} className="btnModify" style={{padding: "3% 34%"}}>Modificar</Link>
-                                                <button className="btnDelete" style={{marginTop: 15}} onClick={() => deletePackage(row.packageInfo.code)}>Eliminar</button>
+                                                <Link to={`/employee/update-package/${row.packageInfo.code}`} className="btnModify" style={{ padding: "3% 34%" }}>Modificar</Link>
+                                                <button className="btnDelete" style={{ marginTop: 15 }} onClick={() => deletePackage(row.packageInfo.code)}>Eliminar</button>
                                             </TableCell>
                                         </TableRow>
                                     ))}

@@ -7,19 +7,34 @@ import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 import EmployeeService from "../../services/EmployeeService";
 
+/**
+ * El componente `ReadEmployees` permite a los administradores ver y gestionar los empleados.
+ * @returns {JSX.Element} Componente ReadEmployees.
+ */
 export const ReadEmployees = () => {
-    const [data, setData] = useState([]);
-    const [id, setId] = useState(0);
-    const [employeesInactive, setEmployeesInactive] = useState(false);
-    const [open, setOpen] = React.useState(false);
 
+    // Estado para almacenar los datos de los empleados
+    const [data, setData] = useState([]);
+
+    // Estado para almacenar el ID del empleado seleccionado
+    const [id, setId] = useState(0);
+
+    // Estado para controlar la visualización de los empleados inactivos
+    const [employeesInactive, setEmployeesInactive] = useState(false);
+
+    // Estado para controlar la apertura y cierre del modal de advertencia
+    const [open, setOpen] = useState(false);
+
+    // Función para abrir el modal de advertencia y almacenar el ID del empleado
     const handleOpen = (id) => {
         setOpen(true);
         setId(id);
     };
 
+    // Función para cerrar el modal de advertencia
     const handleClose = () => setOpen(false);
 
+    // Función para eliminar un empleado por ID y por una operación de las 2 permitidas.
     const deleteEmployee = (id, operation) => {
         if (operation == 1) {
             EmployeeService.deleteEmployee(id, operation, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8))
@@ -34,20 +49,24 @@ export const ReadEmployees = () => {
         }
     }
 
+    // Función para obtener la lista de empleados
     const listOfEmployees = () => {
         EmployeeService.getAllEmployeesWithAllInfo(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(res => {
             setData(res.data)
         }).catch(e => console.log(e));
     }
 
+    // Cargar la lista de empleados
     useEffect(() => {
         listOfEmployees();
     }, []);
 
+    // Verificar si hay un token de sesión activo
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin") {
             return (
                 <>

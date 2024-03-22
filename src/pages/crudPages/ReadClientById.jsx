@@ -7,9 +7,16 @@ import { Box, FormControl, TextField, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ClientService from "../../services/ClientService";
 
+/**
+ * El componente `ReadClientById` permite a los administradores y empleados ver los detalles de un cliente específico.
+ * @returns {JSX.Element} Componente ReadClientById.
+ */
 export const ReadClientById = () => {
+
+    // Obtener el parámetro de la URL para el ID del cliente
     const { id } = useParams()
 
+    // Efecto para cargar los datos del cliente
     useEffect(() => {
         if (id) {
             ClientService.getClientById(id, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
@@ -25,10 +32,12 @@ export const ReadClientById = () => {
         }
     }, []);
 
+    // Verificar si hay un token de sesión activo
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin" || rol.role == "Employee") {
             return (
                 <>

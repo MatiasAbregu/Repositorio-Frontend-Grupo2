@@ -8,8 +8,10 @@ import dayjs from "dayjs";
 import UserService from "../../services/UserService";
 import { useEffect, useState } from "react";
 
-const UserCreate = ({ employee }) => {
+// Componente UserCreate que representa la página de registro de usuario de la aplicación.
+const UserCreate = () => {
 
+  // Todas las métodos de YUP a usar + Hook useForm para validar
   const {
     register,
     handleSubmit,
@@ -18,9 +20,13 @@ const UserCreate = ({ employee }) => {
     resolver: yupResolver(userValidationYup()),
   });
 
+  // Mensaje en caso de: Éxito o Error.
   const [log, setLog] = useState("");
+
+  // Componente para dar avisa acorde al log.
   const [alertComponent, setAlertComponent] = useState(null);
 
+  // Función dónde se registrará en la API al usuario
   const onSubmit = (data) => {
     data.birthdate = dayjs(data.birthdate).format("YYYY-MM-DD");
 
@@ -48,25 +54,28 @@ const UserCreate = ({ employee }) => {
     window.scrollTo(0, 0);
   };
 
+  // UseEffect para mostrar el mensaje en el componente.
   useEffect(() => {
     if (log === "Success") {
       setAlertComponent(
-        <Alert severity="success" sx={{ width: 500, mt: 2, '*': { width: "auto" }  }}>
+        <Alert severity="success" sx={{ width: 500, mt: 2, '*': { width: "auto" } }}>
           ¡Registro creado con éxito! Ya puedes iniciar sesión.
         </Alert>
       );
     } else if (log === "Failed") {
       setAlertComponent(
-        <Alert severity="error" sx={{ width: 500, mt: 2, '*': { width: "auto" }  }}>
+        <Alert severity="error" sx={{ width: 500, mt: 2, '*': { width: "auto" } }}>
           ¡Usuario o DNI ya registrado! Si ya estás registrado inicia sesión.
         </Alert>
       );
     }
   }, [log]);
 
+  // Renderizado de la página
   return (
     <>
       <Header />
+      {/* Contenedor */}
       <Container
         sx={{
           alignItems: "center",
@@ -75,7 +84,9 @@ const UserCreate = ({ employee }) => {
           justifyContent: "center",
         }}
       >
-        {alertComponent}
+        {alertComponent /* Componente mensaje de LOG */}
+
+        {/* Formulario */}
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -95,6 +106,8 @@ const UserCreate = ({ employee }) => {
         >
           <Typography variant="h5" sx={{ textAlign: "center", color: "black" }}>Registrarse</Typography>
           <hr />
+
+          {/* Campo del nombre */}
           <TextField
             id="name"
             label="Nombre"
@@ -105,6 +118,7 @@ const UserCreate = ({ employee }) => {
           />
           <Typography textAlign={"center"}>{errors.name?.message}</Typography>
 
+          {/* Campo del apellido */}
           <TextField
             id="last_name"
             label="Apellido"
@@ -118,6 +132,7 @@ const UserCreate = ({ employee }) => {
             {errors.last_name?.message}
           </Typography>
 
+          {/* Campo del nombre de usuario */}
           <TextField
             id="user_name"
             label="Nombre de usuario"
@@ -131,6 +146,7 @@ const UserCreate = ({ employee }) => {
             {errors.user_name?.message}
           </Typography>
 
+          {/* Campo del dni */}
           <TextField
             id="dni"
             label="DNI"
@@ -142,6 +158,7 @@ const UserCreate = ({ employee }) => {
           />
           <Typography textAlign={"center"}>{errors.dni?.message}</Typography>
 
+          {/* Campo del teléfono*/}
           <TextField
             id="phone"
             label="Teléfono"
@@ -153,9 +170,10 @@ const UserCreate = ({ employee }) => {
           />
           <Typography textAlign={"center"}>{errors.phone?.message}</Typography>
 
+          {/* Campo de la dirección */}
           <TextField
             id="address"
-            label="Direccion"
+            label="Dirección"
             fullWidth
             type="text"
             {...register("address")}
@@ -163,6 +181,8 @@ const UserCreate = ({ employee }) => {
             error={errors.address?.message}
           />
           <Typography textAlign={"center"}>{errors.address?.message}</Typography>
+
+          {/* Campo de la nacionalidad */}
           <TextField
             id="nationality"
             label="Nacionalidad"
@@ -175,6 +195,7 @@ const UserCreate = ({ employee }) => {
             {errors.nationality?.message}
           </Typography>
 
+          {/* Campo del email */}
           <TextField
             id="email"
             label="Email"
@@ -184,6 +205,8 @@ const UserCreate = ({ employee }) => {
             error={errors.email?.message}
           />
           <Typography textAlign={"center"}>{errors.email?.message}</Typography>
+
+          {/* Campo de la contraseña */}
           <TextField
             id="password"
             label="Contraseña"
@@ -194,6 +217,8 @@ const UserCreate = ({ employee }) => {
             error={errors.password?.message}
           />
           <Typography textAlign={"center"}>{errors.password?.message}</Typography>
+
+          {/* Campo para validar la contraseña */}
           <TextField
             id="confirmPassword"
             label="Confirmar contraseña"
@@ -207,19 +232,7 @@ const UserCreate = ({ employee }) => {
             {errors.confirmPassword?.message}
           </Typography>
 
-          <TextField
-            sx={{ display: (employee != undefined) ? "flex" : "none" }}
-            id="postEmployee"
-            label="Cargo del empleado"
-            type="text"
-            fullWidth
-            {...register("postEmployee")}
-            error={errors.postEmployee?.message}
-          />
-          <Typography textAlign={"center"}>
-            {errors.postEmployee?.message}
-          </Typography>
-
+          {/* Campo del nacimiento de la persona */}
           <TextField
             id="birthdate"
             name="birthdate"
@@ -232,21 +245,27 @@ const UserCreate = ({ employee }) => {
           <Typography textAlign={"center"}>
             {errors.birthdate?.message}
           </Typography>
+
+          {/* Boton submit */}
           <Button
             variant="contained"
             type="submit"
             sx={{
               width: "60%",
               mt: 4,
-              color: "white",
+              color: "black",
               fontSize: 18,
-              backgroundColor: "#ddabab",
+              backgroundColor: "transparent",
+              border: "2px solid lightgreen",
               marginRight: "20%",
-              marginLeft: "20%"
+              marginLeft: "20%",
+              ':hover': {
+                  border: "2px solid lightgreen",
+                  backgroundColor: "lightgreen",
+                  color: "white"
+              }
             }}
-          >
-            Crear
-          </Button>
+          > Crear </Button>
         </Box>
       </Container>
       <Footer />

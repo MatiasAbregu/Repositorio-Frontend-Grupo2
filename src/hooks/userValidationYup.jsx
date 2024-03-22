@@ -1,5 +1,9 @@
 import * as yup from "yup";
 
+/**
+ * Función que devuelve un esquema de validación Yup para datos de usuario.
+ * @returns {yup.ObjectSchema<object>} Esquema de validación Yup para datos de usuario.
+ */
 const userValidationYup = () => {
 
   const schema = yup.object().shape({

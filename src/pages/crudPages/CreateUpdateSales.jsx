@@ -15,19 +15,34 @@ import ClientService from "../../services/ClientService";
 import PackageService from "../../services/PackageService";
 import SalesService from "../../services/SalesService";
 
+/**
+ * El componente `CreateUpdateSales` permite a los administradores y empleados crear o actualizar ventas.
+ * @returns {JSX.Element} Componente CreateUpdateSales.
+ */
 export const CreateUpdateSales = () => {
 
+    // Esquema de validación Yup para el formulario
     const schema = yup.object().shape({
         payment: yup.string().required("Debe rellenar este campo."),
         date: yup.date().required("Debes seleccionar una fecha.").typeError("Debe ser una fecha válida."),
     });
 
+    // Estado para almacenar mensajes de registro o actualización exitosa o fallida
     const [log, setLog] = useState("");
-    const [alertComponent, setAlertComponent] = useState(null);
-    const { id } = useParams();
-    const [requestInfo, setRequestInfo] = useState(false);
-    const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
+    // Estado para el componente de alerta
+    const [alertComponent, setAlertComponent] = useState(null);
+
+    // Obtener el ID del servicio de los parámetros de la URL
+    const { id } = useParams();
+
+    // Estado para determinar si se debe cargar la información de la solicitud
+    const [requestInfo, setRequestInfo] = useState(false);
+
+    // React Hook Form para manejar el formulario y la validación
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
+
+    // Estados para el manejo de la lógica del componente
     const [dataE, setDataE] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState(0);
     const [dataC, setDataC] = useState([]);
@@ -36,11 +51,13 @@ export const CreateUpdateSales = () => {
     const [selectedProduct, setSelectedProduct] = useState(0);
     const [typeToRequest, setTypeToRequest] = useState("service");
 
+    // Funciones para manejar la selección de cliente, empleado y producto
     const handleListClient = (event, id) => setSelectedClient(id);
     const handleListEmployees = (event, id) => setSelectedEmployee(id);
     const handleListProduct = (event, id) => setSelectedProduct(id);
     const handleChange = (e) => setTypeToRequest(e.target.value);
 
+    // Función para crear o actualizar una venta
     const onSubmit = (data) => {
         if (selectedEmployee === 0) return setLog("Fill");
         else if (selectedClient === 0) return setLog("Fill");
@@ -137,30 +154,35 @@ export const CreateUpdateSales = () => {
         }
     }
 
+    // Función para cargar los empleados
     const loadEmployees = () => {
         EmployeeService.getAllEmployees(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8))
             .then(r => setDataE(r.data))
             .catch(e => console.log(e));
     }
 
+    // Función para cargar los clientes
     const loadClients = () => {
         ClientService.getAllClients(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8))
             .then(r => setDataC(r.data))
             .catch(e => console.log(e));
     }
 
+    // Función para cargar los servicios
     const loadServices = () => {
         ServiceConnection.getAllServicesDetailed(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8))
             .then(r => setDataToBuy(r.data))
             .catch(e => console.log(e));
     }
 
+    // Función para cargar los paquetes
     const loadPackages = () => {
         PackageService.getAllPackages()
             .then(r => setDataToBuy(r.data))
             .catch(e => console.log(e));
     }
 
+    // Efecto para mostrar alertas después de la creación o actualización exitosa o fallida y cargar clientes, empleados y servicios o paquetes
     useEffect(() => {
         loadEmployees();
         loadClients();
@@ -216,10 +238,12 @@ export const CreateUpdateSales = () => {
 
     }, [log, typeToRequest]);
 
+    // Verifica si existe un token, sino lo redirecciona a iniciar sesión
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin" || rol.role == "Employee") {
             return (
                 <>

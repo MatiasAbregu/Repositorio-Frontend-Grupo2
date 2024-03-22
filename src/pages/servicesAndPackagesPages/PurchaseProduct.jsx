@@ -14,29 +14,51 @@ import EmployeeService from "../../services/EmployeeService";
 import PackageService from "../../services/PackageService";
 import SalesService from "../../services/SalesService";
 
+/**
+ * El componente `PurchaseProduct` permite al usuario comprar un servicio o un paquete.
+ * @param {string} typeProduct - El tipo de producto a comprar ('service' o 'package') para cargar una u otra información.
+ * @returns {JSX.Element} Componente PurchaseProduct.
+ */
 export const PurchaseProduct = ({ typeProduct }) => {
 
+    // Esquema de validación YUP para el formulario de compra
     const schema = yup.object().shape({
         payment: yup.string().oneOf(["Efectivo", "Tarjeta de Crédito", "Tarjeta de Dédito", "Monedero Virtual", "Transeferencia"], "Por favor selecciona uno de los tipos existentes.").default("Efectivo").required('Selecciona unn método de pago antes de continuar.'),
         date: yup.date().required("Debes seleccionar una fecha.").typeError("Debe ser una fecha válida."),
     });
 
+     // Estado para el método de pago seleccionado
     const [paymentMethod, setPaymentMethod] = useState('Efectivo');
+
+     // Estado para mensajes de alertas
     const [log, setLog] = useState("");
     const [alertComponent, setAlertComponent] = useState(null);
+
+    // Obtener el ID del producto de los parámetros de la URL
     const { id } = useParams();
+
+    // Todas las métodos de YUP a usar + Hook useForm para validar
     const { handleSubmit, setValue, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
+    // Estado para almacenar los empleados
     const [dataE, setDataE] = useState([]);
+
+    // Estado para el empleado seleccionado
     const [selectedEmployee, setSelectedEmployee] = useState(0);
+
+     // Estado para almacenar los datos del producto a comprar
     const [dataToBuy, setDataToBuy] = useState([]);
 
+    // Función para manejar la selección de empleados
     const handleListEmployees = (event, id) => setSelectedEmployee(id);
+
+    // Función para manejar cambios en el método de pago
     const handleChange = (e) => {
         setPaymentMethod(e.target.value);
         setValue("payment", e.target.value, { shouldValidate: true });
     }
 
+    // Función dónde se registrará en la API la venta realizada
     const onSubmit = (data) => {
         if (selectedEmployee === 0) return setLog("Fill");
         else { setLog(""); setAlertComponent(null); }
@@ -89,24 +111,28 @@ export const PurchaseProduct = ({ typeProduct }) => {
         }).catch(e => console.log(e));
     }
 
+    // Función para cargar los empleados
     const loadEmployees = () => {
         EmployeeService.getAllEmployees(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8))
             .then(r => setDataE(r.data))
             .catch(e => console.log(e));
     }
 
+    // Función para cargar el servicio
     const loadService = () => {
         ServiceConnection.getServiceById(id)
             .then(r => setDataToBuy(r.data))
             .catch(e => console.log(e));
     }
 
+    // Función para cargar el paquete
     const loadPackage = () => {
         PackageService.getPackageById(id)
             .then(r => setDataToBuy(r.data))
             .catch(e => console.log(e));
     }
 
+    // Se cargan empleados y datos del producto y para mostrar el mensaje en el componente.
     useEffect(() => {
         loadEmployees();
         console.log(dataToBuy);
@@ -115,19 +141,11 @@ export const PurchaseProduct = ({ typeProduct }) => {
         else if (typeProduct === "package") { loadPackage(); setValue("date", new Date()); }
 
         if (log === "Success") {
-            if (id) {
                 setAlertComponent(
                     <Alert severity="success" sx={{ width: "96%", mt: 2, '*': { width: "auto" } }}>
-                        ¡Venta actualizada con éxito! Ve a gestión de ventas para visualizarlo.
+                        ¡Venta realizada con éxito! ¡Gracias por comprar en Travsky!
                     </Alert>
                 );
-            } else {
-                setAlertComponent(
-                    <Alert severity="success" sx={{ width: "96%", mt: 2, '*': { width: "auto" } }}>
-                        ¡Venta creada con éxito! Ve a gestión de ventas para visualizarlo.
-                    </Alert>
-                );
-            }
         } else if (log === "Failed") {
             setAlertComponent(
                 <Alert severity="error" sx={{ width: "96%", mt: 2, '*': { width: "auto" } }}>
@@ -144,6 +162,7 @@ export const PurchaseProduct = ({ typeProduct }) => {
 
     }, [log]);
 
+    // Verifica si existe un token, sino lo redirecciona a iniciar sesión
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
@@ -155,9 +174,10 @@ export const PurchaseProduct = ({ typeProduct }) => {
                     <FormControl sx={{ width: "80%", margin: "5% 8%", background: "white", padding: 2, borderRadius: 3, boxShadow: "1px 1px 20px #333" }}>
                         <Typography variant="h5" sx={{ textAlign: "center", color: "black", padding: "1% 0" }}>Para proseguir en tu compra:</Typography>
                         <hr />
+                        {/* Información del paquete o servicio */}
                         <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", border: "3px double gray", borderRadius: 2, color: "black" }}>
-                            <Typography align="center">Vas a comprar:</Typography>
-                            <Box sx={{ width: "50%", mb: 1 }}>
+                            <Typography sx={{fontSize: 20, mb: 2}} align="center">Vas a comprar:</Typography>
+                            <Box sx={{ width: "49%", mr: 2, mb: 1 }}>
 
                                 <p style={{ margin: "0 2%" }}><u>Nombre del servicio/paquete:</u> <b>
                                     {(dataToBuy.packageInfo && dataToBuy.packageInfo.name) || dataToBuy.name}
@@ -170,7 +190,10 @@ export const PurchaseProduct = ({ typeProduct }) => {
                                 {(dataToBuy.services && <p style={{ margin: "0 2%" }}><u>Servicios que trae:</u></p>)
                                     || <p style={{ margin: "0 2%" }}><u>Descripción del servicio:</u> {dataToBuy.desc}</p>}
 
-                                {dataToBuy.services && dataToBuy.services.map(s => <p key={s.idSxP} style={{ margin: "0 2%" }}>-{s.name}: {s.desc}</p>)}
+                                {dataToBuy.services && dataToBuy.services.map(s => 
+                                <p key={s.idSxP} style={{ margin: "0 2%" }}>-•- {s.name}: {s.desc} | Fecha de uso: {s.date}</p>)}
+
+                                {dataToBuy.date && <p style={{ margin: "0 2%" }}><u>Fecha de uso:</u> {dataToBuy.date}</p>}
                             </Box>
                             <Box sx={{ width: "48%", borderRadius: 2, border: "1px solid gray", padding: "1% 0 0.6% 0.5%", mb: 1 }}>
                                 {(dataToBuy.services && dataToBuy.services.map(s => <img key={s.idSxP} src={s.img} style={{
@@ -179,6 +202,8 @@ export const PurchaseProduct = ({ typeProduct }) => {
                                 }} />)) || <img src={dataToBuy.img} style={{width: "95%", height: "300px", borderRadius: 10, border: "1px solid gray", margin: "0 1%"}} />}
                             </Box>
                         </Box>
+                        
+                        {/* Formulario para hacer la venta */}
                         <Box sx={{ display: "flex", flexWrap: "wrap", margin: "2% 5%", maxWidth: "90%", justifyContent: "center" }} component="form"
                             onSubmit={handleSubmit(data => onSubmit(data))}>
                             <FormControl variant="filled" error={errors.type?.message} sx={{

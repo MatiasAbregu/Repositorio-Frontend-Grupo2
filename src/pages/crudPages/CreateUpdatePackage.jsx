@@ -11,21 +11,42 @@ import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import PackageService from "../../services/PackageService";
 
+/**
+ * El componente `CreateUpdatePackages` permite a los administradores y empleados crear o actualizar paquetes.
+ * @returns {JSX.Element} Componente CreateUpdatePackages.
+ */
 export const CreateUpdatePackage = () => {
 
+    // Esquema de validación Yup para el formulario
     const schema = yup.object().shape({
         name: yup.string().required("Debe rellenar este campo."),
     });
 
+    // Estado para actualizar datos.
     const [dataRefresh, setDataRefresh] = useState(true);
+    
+     // Índice temporal para servicios.
     const [indexTemporal, setIndexTemporal] = useState(1);
+
+    // Estado para almacenar servicios.
     const [dataServices, setDataServices] = useState([]);
+
+    // Estado para almacenar el paquete.
     const [dataPackage, setDataPackage] = useState([]);
+
+    // Estado para almacenar mensajes de registro o actualización exitosa o fallida
     const [log, setLog] = useState("");
+
+    // Estado para el componente de alerta
     const [alertComponent, setAlertComponent] = useState(null);
+
+    // Estado para almacenar mensajes de registro o actualización exitosa o fallida
     const { id } = useParams()
+
+    // React Hook Form para manejar el formulario y la validación
     const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
+    // Función para crear o actualizar un paquete
     const onSubmit = (data) => {
         if (dataPackage.length < 2) return setLog("Fill");
         else { setLog(""); setAlertComponent(null); }
@@ -68,11 +89,13 @@ export const CreateUpdatePackage = () => {
         }
     }
 
+    // Función para cargar los servicios
     const loadServices = () => {
         ServiceConnection.getAllServicesDetailed(AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8))
             .then(r => setDataServices(r.data));
     }
 
+    // Efecto para mostrar alertas después de la creación o actualización exitosa o fallida y cargar servicios
     useEffect(() => {
         if (dataRefresh) {
             loadServices();
@@ -115,6 +138,7 @@ export const CreateUpdatePackage = () => {
 
     }, [log]);
 
+    // Añade servicios al paquete
     const addService = (id, name) => {
         setIndexTemporal(indexTemporal + 1);
         const services = [...dataPackage, { indexTemporal, id, name }];
@@ -122,6 +146,7 @@ export const CreateUpdatePackage = () => {
         setDataRefresh(true);
     }
 
+    // Elimina servicios del paquete
     const removeService = (index) => {
         if (id) {
             const newDataPackage = dataPackage.filter(service => service.idSxP !== index);
@@ -133,10 +158,12 @@ export const CreateUpdatePackage = () => {
         setDataRefresh(true);
     }
 
+    // Verifica si existe un token, sino lo redirecciona a iniciar sesión
     if (sessionStorage.getItem('token')) {
         const token = AES.decrypt(sessionStorage.getItem('token'), "patito");
         const rol = jwtDecode(token.toString(enc.Utf8));
 
+        // Se desencripta y verifica si trae rol "Admin" o "Employee", si no, entonces se lo redirecciona a iniciar sesión
         if (rol.role == "Admin" || rol.role == "Employee") {
             return (
                 <>
