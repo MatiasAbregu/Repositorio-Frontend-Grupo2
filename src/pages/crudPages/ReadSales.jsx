@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from "@mui/material";
 import Footer from "../../components/Footer";
 import { AES, enc } from "crypto-js";
 import { jwtDecode } from "jwt-decode";
@@ -15,6 +15,20 @@ export const ReadSales = () => {
 
     // Estado para almacenar los datos de las ventas
     const [data, setData] = useState([]);
+
+    // Estado para almacenar los datos filtrados
+    const [dataFilter, setDataFilter] = useState([]);
+
+    // Estado para almacenar el dato a buscar en el buscador
+    const [searchValue, setSearchValue] = useState('');
+
+    // Función para cambiar el estado del "searchValue"
+    const handleChange = (event) => setSearchValue(event.target.value);
+
+    // Función para filtrar por el valor de searchValue
+    const filterService = () => setDataFilter(data.filter((sale) => {
+        sale.service.name.includes(searchValue) || sale.packageName.name.includes(searchValue)
+    }));
 
     // Función para eliminar una venta por un ID
     const deleteSale = (id) => {
@@ -44,6 +58,27 @@ export const ReadSales = () => {
                 <>
                     <Header variant={2} />
                     <Paper sx={{ width: '98%', overflow: 'hidden', margin: "1% 1%", background: "transparent", boxShadow: "none" }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexWrap: "nowrap",
+                                p: 1
+                            }}
+                        >
+                            <Typography component={"p"} sx={{
+                                textAlign: "center", width: "10%", display: "flex",
+                                alignContent: "center",
+                                justifyContent: "center",
+                            }}>
+                                <i>Filtrar por nombre de servicio/paquete:</i>
+                            </Typography>
+                            <TextField sx={{ mr: 3, mb: 1, width: "50%", border: "1px solid #222", borderRadius: 2 }}
+                                onChange={handleChange} value={searchValue} label="Nombre" variant="filled" InputLabelProps={{ shrink: true }} InputProps={{ disableUnderline: true }} />
+                            <button style={{ height: "auto", width: "10%", marginLeft: "20px", backgroundColor: "#333333" }} onClick={() => filterService()} > Filtrar </button>
+                            <button style={{ height: "auto", width: "10%", marginLeft: 10, backgroundColor: "#333333" }} onClick={() => setDataFilter([])}> Recagar </button>
+                        </Box>
                         <button className="btnAdd" onClick={() => { window.location.href = "/employee/create-sale" }}>Agregar venta</button>
                         <TableContainer sx={{ maxHeight: 550 }}>
                             <Table stickyHeader sx={{ minWidth: 660 }}>
@@ -59,32 +94,59 @@ export const ReadSales = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data.map((row) => (
-                                        <TableRow key={row.code}>
-                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
-                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 100 }}>{row.date}</TableCell>
-                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>{row.payment}</TableCell>
-                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", overflowX: "auto", border: "1px solid #BBB", minWidth: 200 }}>
-                                                <Link to={`/employee/clients/${row.client.code}`}>DNI: {row.client.person.dni}</Link> <br />
-                                                {row.client.person.firstName} {row.client.person.lastName}
-                                            </TableCell>
-                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>
-                                                {
-                                                row.service ? 
-                                                `${row.service.name} (Servicio)` : 
-                                                `${row.packageName.name} (Paquete)`
-                                                }
-                                            </TableCell>
-                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>
-                                                <Link to={`/employee/update-employee/${row.employee.code}`}>ID de empleado: {row.employee.person.dni}</Link> <br />
-                                                {row.employee.person.firstName} {row.employee.person.lastName}
-                                            </TableCell>
-                                            <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
-                                                <Link to={`/employee/update-sale/${row.code}`} className="btnModify">Modificar</Link>
-                                                <button className="btnDelete" onClick={() => deleteSale(row.code)}>Eliminar</button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {dataFilter && dataFilter.length > 0 ?
+                                        dataFilter.map((row) => (
+                                            <TableRow key={row.code}>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 100 }}>{row.date}</TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>{row.payment}</TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", overflowX: "auto", border: "1px solid #BBB", minWidth: 200 }}>
+                                                    <Link to={`/employee/clients/${row.client.code}`}>DNI: {row.client.person.dni}</Link> <br />
+                                                    {row.client.person.firstName} {row.client.person.lastName}
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>
+                                                    {
+                                                        row.service ?
+                                                            `${row.service.name} (Servicio)` :
+                                                            `${row.packageName.name} (Paquete)`
+                                                    }
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>
+                                                    <Link to={`/employee/update-employee/${row.employee.code}`}>ID de empleado: {row.employee.person.dni}</Link> <br />
+                                                    {row.employee.person.firstName} {row.employee.person.lastName}
+                                                </TableCell>
+                                                <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
+                                                    <Link to={`/employee/update-sale/${row.code}`} className="btnModify">Modificar</Link>
+                                                    <button className="btnDelete" onClick={() => deleteSale(row.code)}>Eliminar</button>
+                                                </TableCell>
+                                            </TableRow>
+                                        )) :
+                                        data.map((row) => (
+                                            <TableRow key={row.code}>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 100 }}>{row.date}</TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>{row.payment}</TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", overflowX: "auto", border: "1px solid #BBB", minWidth: 200 }}>
+                                                    <Link to={`/employee/clients/${row.client.code}`}>DNI: {row.client.person.dni}</Link> <br />
+                                                    {row.client.person.firstName} {row.client.person.lastName}
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>
+                                                    {
+                                                        row.service ?
+                                                            `${row.service.name} (Servicio)` :
+                                                            `${row.packageName.name} (Paquete)`
+                                                    }
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 200 }}>
+                                                    <Link to={`/employee/update-employee/${row.employee.code}`}>ID de empleado: {row.employee.person.dni}</Link> <br />
+                                                    {row.employee.person.firstName} {row.employee.person.lastName}
+                                                </TableCell>
+                                                <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
+                                                    <Link to={`/employee/update-sale/${row.code}`} className="btnModify">Modificar</Link>
+                                                    <button className="btnDelete" onClick={() => deleteSale(row.code)}>Eliminar</button>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>

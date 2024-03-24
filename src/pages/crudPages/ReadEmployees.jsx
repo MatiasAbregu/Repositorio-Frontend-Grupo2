@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import {  Box, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import Footer from "../../components/Footer";
 import { AES, enc } from "crypto-js";
 import { jwtDecode } from "jwt-decode";
@@ -16,6 +16,12 @@ export const ReadEmployees = () => {
     // Estado para almacenar los datos de los empleados
     const [data, setData] = useState([]);
 
+    // Estado para almacenar los datos filtrados
+    const [dataFilter, setDataFilter] = useState([]);
+
+    // Estado para almacenar el dato a buscar en el buscador
+    const [searchValue, setSearchValue] = useState('');
+
     // Estado para almacenar el ID del empleado seleccionado
     const [id, setId] = useState(0);
 
@@ -30,6 +36,12 @@ export const ReadEmployees = () => {
         setOpen(true);
         setId(id);
     };
+
+    // Función para cambiar el estado del "searchValue"
+    const handleChange = (event) => setSearchValue(event.target.value);
+
+    // Función para filtrar por el valor de searchValue
+    const filterService = () => setDataFilter(data.filter((employee) => employee.person.firstName.includes(searchValue)));
 
     // Función para cerrar el modal de advertencia
     const handleClose = () => setOpen(false);
@@ -110,7 +122,28 @@ export const ReadEmployees = () => {
                         </Box>
                     </Modal>
                     <Header variant={2} />
-                    <Paper sx={{ width: '98%', overflow: 'hidden', margin: "5% 1% 6% 1%", background: "transparent", boxShadow: "none" }}>
+                    <Paper sx={{ width: '98%', overflow: 'hidden', margin: "1% 1% 6% 1%", background: "transparent", boxShadow: "none" }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexWrap: "nowrap",
+                                p: 1
+                            }}
+                        >
+                            <Typography component={"p"} sx={{
+                                textAlign: "center", width: "10%", display: "flex",
+                                alignContent: "center",
+                                justifyContent: "center",
+                            }}>
+                                <i>Filtrar por nombre:</i>
+                            </Typography>
+                            <TextField sx={{ mr: 3, mb: 1, width: "50%", border: "1px solid #222", borderRadius: 2 }}
+                                onChange={handleChange} value={searchValue} label="Nombre" variant="filled" InputLabelProps={{ shrink: true }} InputProps={{ disableUnderline: true }} />
+                            <button style={{ height: "auto", width: "10%", marginLeft: "20px", backgroundColor: "#333333" }} onClick={() => filterService()} > Filtrar </button>
+                            <button style={{ height: "auto", width: "10%", marginLeft: 10, backgroundColor: "#333333" }} onClick={() => setDataFilter([])}> Recagar </button>
+                        </Box>
                         <Box sx={{ mb: 2 }}>
                             <button className="btnAdd" onClick={() => { window.location.href = "/employee/create-employee" }} style={{ width: "40%", margin: "0 5%" }}>Agregar empleado</button>
                             <button className="btnAdd" onClick={() => { if (employeesInactive == true) setEmployeesInactive(false); else setEmployeesInactive(true) }}
@@ -129,41 +162,77 @@ export const ReadEmployees = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data.map((row) => {
-                                        if (employeesInactive) {
-                                            if (row.income == 0) {
-                                                return (
-                                                    <TableRow key={row.code}>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 300 }}>
-                                                            <Link to={`/employee/update-employee/${row.code}`}>{row.person.dni} (Click para modificar)</Link>
-                                                        </TableCell>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, border: "1px solid #BBB" }}>{row.job}</TableCell>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, overflowX: "auto", border: "1px solid #BBB" }}>${row.income}</TableCell>
-                                                        <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
-                                                            <button className="btnDelete" onClick={() => deleteEmployee(row.code)} style={{ margin: 0 }}>Eliminar</button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
+                                    {dataFilter && dataFilter.length > 0 ?
+                                        dataFilter.map((row) => {
+                                            if (employeesInactive) {
+                                                if (row.income == 0) {
+                                                    return (
+                                                        <TableRow key={row.code}>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 300 }}>
+                                                                <Link to={`/employee/update-employee/${row.code}`}>{row.person.dni} (Click para modificar)</Link>
+                                                            </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, border: "1px solid #BBB" }}>{row.job}</TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, overflowX: "auto", border: "1px solid #BBB" }}>${row.income}</TableCell>
+                                                            <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
+                                                                <button className="btnDelete" onClick={() => deleteEmployee(row.code)} style={{ margin: 0 }}>Eliminar</button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                }
+                                            } else {
+                                                if (row.income > 0) {
+                                                    return (
+                                                        <TableRow key={row.code}>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 300 }}>
+                                                                <Link to={`/employee/update-employee/${row.code}`}>{row.person.dni} (Click para modificar)</Link>
+                                                            </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, border: "1px solid #BBB" }}>{row.job}</TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, overflowX: "auto", border: "1px solid #BBB" }}>${row.income}</TableCell>
+                                                            <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
+                                                                <button className="btnDelete" onClick={() => handleOpen(row.code)} style={{ margin: 0 }}>Eliminar</button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                }
                                             }
-                                        } else {
-                                            if (row.income > 0) {
-                                                return (
-                                                    <TableRow key={row.code}>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 300 }}>
-                                                            <Link to={`/employee/update-employee/${row.code}`}>{row.person.dni} (Click para modificar)</Link>
-                                                        </TableCell>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, border: "1px solid #BBB" }}>{row.job}</TableCell>
-                                                        <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, overflowX: "auto", border: "1px solid #BBB" }}>${row.income}</TableCell>
-                                                        <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
-                                                            <button className="btnDelete" onClick={() => handleOpen(row.code)} style={{ margin: 0 }}>Eliminar</button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
+                                        }) :
+                                        data.map((row) => {
+                                            if (employeesInactive) {
+                                                if (row.income == 0) {
+                                                    return (
+                                                        <TableRow key={row.code}>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 300 }}>
+                                                                <Link to={`/employee/update-employee/${row.code}`}>{row.person.dni} (Click para modificar)</Link>
+                                                            </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, border: "1px solid #BBB" }}>{row.job}</TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, overflowX: "auto", border: "1px solid #BBB" }}>${row.income}</TableCell>
+                                                            <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
+                                                                <button className="btnDelete" onClick={() => deleteEmployee(row.code)} style={{ margin: 0 }}>Eliminar</button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                }
+                                            } else {
+                                                if (row.income > 0) {
+                                                    return (
+                                                        <TableRow key={row.code}>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", maxWidth: 10 }}> {row.code} </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", border: "1px solid #BBB", minWidth: 300 }}>
+                                                                <Link to={`/employee/update-employee/${row.code}`}>{row.person.dni} (Click para modificar)</Link>
+                                                            </TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, border: "1px solid #BBB" }}>{row.job}</TableCell>
+                                                            <TableCell align="center" sx={{ background: "#FFF", color: "black", minWidth: 300, overflowX: "auto", border: "1px solid #BBB" }}>${row.income}</TableCell>
+                                                            <TableCell sx={{ background: "#FFF", border: "1px solid #BBB" }}>
+                                                                <button className="btnDelete" onClick={() => handleOpen(row.code)} style={{ margin: 0 }}>Eliminar</button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                }
                                             }
-                                        }
-                                    })}
+                                        })}
                                 </TableBody>
                             </Table>
                         </TableContainer>
