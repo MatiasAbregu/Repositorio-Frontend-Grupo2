@@ -15,6 +15,7 @@ const UserCreate = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(userValidationYup()),
@@ -47,9 +48,23 @@ const UserCreate = () => {
     };
 
     UserService.createUser(person).then(res => {
-      if (res.data.value) setLog("Success");
+      if (res.data) {
+        setLog("Success");
+        setValue("dni", "");
+        setValue("firstName", "");
+        setValue("lastName", "");
+        setValue("birthdate", "");
+        setValue("address", "");
+        setValue("nationality", "");
+        setValue("username", "");
+        setValue("password", "");
+        setValue("email", "");
+        setValue("cellphone", "");
+      }
       else setLog("Failed")
-    }).catch(e => setLog("Failed"));
+    }).catch(e => {
+      setLog("Failed");
+    });
 
     window.scrollTo(0, 0);
   };
@@ -116,7 +131,7 @@ const UserCreate = () => {
             sx={{ m: 1, mt: 3 }}
             error={errors.name?.message}
           />
-          <Typography textAlign={"center"}>{errors.name?.message}</Typography>
+          <Typography textAlign={"center"} color={"black"}>{errors.name?.message}</Typography>
 
           {/* Campo del apellido */}
           <TextField
@@ -128,7 +143,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.last_name?.message}
           />
-          <Typography textAlign={"center"}>
+          <Typography textAlign={"center"} color={"black"}>
             {errors.last_name?.message}
           </Typography>
 
@@ -142,9 +157,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.user_name?.message}
           />
-          <Typography textAlign={"center"}>
-            {errors.user_name?.message}
-          </Typography>
+          <Typography textAlign={"center"} color={"black"}> {errors.user_name?.message} </Typography>
 
           {/* Campo del dni */}
           <TextField
@@ -156,7 +169,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.dni?.message}
           />
-          <Typography textAlign={"center"}>{errors.dni?.message}</Typography>
+          <Typography textAlign={"center"} color={"black"}>{errors.dni?.message}</Typography>
 
           {/* Campo del teléfono*/}
           <TextField
@@ -168,7 +181,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.phone?.message}
           />
-          <Typography textAlign={"center"}>{errors.phone?.message}</Typography>
+          <Typography textAlign={"center"} color={"black"}>{errors.phone?.message}</Typography>
 
           {/* Campo de la dirección */}
           <TextField
@@ -180,7 +193,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.address?.message}
           />
-          <Typography textAlign={"center"}>{errors.address?.message}</Typography>
+          <Typography textAlign={"center"} color={"black"}>{errors.address?.message}</Typography>
 
           {/* Campo de la nacionalidad */}
           <TextField
@@ -191,9 +204,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.nationality?.message}
           />
-          <Typography textAlign={"center"}>
-            {errors.nationality?.message}
-          </Typography>
+          <Typography textAlign={"center"} color={"black"}> {errors.nationality?.message} </Typography>
 
           {/* Campo del email */}
           <TextField
@@ -204,7 +215,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.email?.message}
           />
-          <Typography textAlign={"center"}>{errors.email?.message}</Typography>
+          <Typography textAlign={"center"} color={"black"}>{errors.email?.message}</Typography>
 
           {/* Campo de la contraseña */}
           <TextField
@@ -216,7 +227,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.password?.message}
           />
-          <Typography textAlign={"center"}>{errors.password?.message}</Typography>
+          <Typography textAlign={"center"} color={"black"}>{errors.password?.message}</Typography>
 
           {/* Campo para validar la contraseña */}
           <TextField
@@ -228,9 +239,7 @@ const UserCreate = () => {
             sx={{ m: 1 }}
             error={errors.confirmPassword?.message}
           />
-          <Typography textAlign={"center"}>
-            {errors.confirmPassword?.message}
-          </Typography>
+          <Typography textAlign={"center"} color={"black"}> {errors.confirmPassword?.message} </Typography>
 
           {/* Campo del nacimiento de la persona */}
           <TextField
@@ -242,9 +251,7 @@ const UserCreate = () => {
             error={errors.birthdate?.message}
             helperText="Intoduce tu fecha de nacimiento"
           />
-          <Typography textAlign={"center"}>
-            {errors.birthdate?.message}
-          </Typography>
+          <Typography textAlign={"center"} color={"black"}> {errors.birthdate?.message} </Typography>
 
           {/* Boton submit */}
           <Button

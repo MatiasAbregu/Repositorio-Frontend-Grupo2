@@ -114,7 +114,7 @@ export const CreateUpdateEmployee = () => {
             };
 
             EmployeeService.createEmployee(employee, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
-                if (r.data.value) {
+                if (r.data) {
                     setValue("dni", "");
                     setValue("firstName", "");
                     setValue("lastName", "");

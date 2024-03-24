@@ -64,8 +64,6 @@ export const CreateUpdatePackage = () => {
                 services: services
             };
 
-            console.log(packageWithServices);
-
             PackageService.updatePackage(id, packageWithServices, AES.decrypt(sessionStorage.getItem('token'), "patito").toString(enc.Utf8)).then(r => {
                 if (r) {
                     setLog("Success");

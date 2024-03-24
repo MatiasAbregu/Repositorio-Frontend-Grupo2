@@ -7,6 +7,10 @@ import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 import PackageService from "../../services/PackageService";
 
+/**
+ * El componente `ReadPackages` permite a los administradores y empleados ver y gestionar los paquetes.
+ * @returns {JSX.Element} Componente ReadPackages.
+ */
 export const ReadPackages = () => {
 
     // Estado para almacenar los datos de los paquetes
