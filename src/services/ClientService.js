@@ -11,7 +11,7 @@ class ClientService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllClients(token){
-        return axios.get("http://localhost:8080/auth/clients", {headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/clients", {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -21,7 +21,7 @@ class ClientService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getClientById(id, token){
-        return axios.get("http://localhost:8080/auth/clients/" + id, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/clients/" + id, {headers: {Authorization: `Bearer ${token}`}});
     }
 }
 

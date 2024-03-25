@@ -10,7 +10,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllHotelsServices(){
-        return axios.get("http://localhost:8080/services", { params: { type: "Hoteles"} } );
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services", { params: { type: "Hoteles"} } );
     }
 
     /**
@@ -18,7 +18,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllCarServices(){
-        return axios.get("http://localhost:8080/services", { params: { type: "Autos"} } );
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services", { params: { type: "Autos"} } );
     }
 
     /**
@@ -26,7 +26,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllPlanesServices(){
-        return axios.get("http://localhost:8080/services", { params: { type: "Aviones"} } );
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services", { params: { type: "Aviones"} } );
     }
 
     /**
@@ -34,7 +34,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllBusServices(){
-        return axios.get("http://localhost:8080/services", { params: { type: "Colectivos"} } );
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services", { params: { type: "Colectivos"} } );
     }
 
     /**
@@ -42,7 +42,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllEventsServices(){
-        return axios.get("http://localhost:8080/services", { params: { type: "Eventos"} } );
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services", { params: { type: "Eventos"} } );
     }
 
     /**
@@ -50,7 +50,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllTrainServices(){
-        return axios.get("http://localhost:8080/services", { params: { type: "Trenes"} } );
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services", { params: { type: "Trenes"} } );
     }
 
     /**
@@ -58,7 +58,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllExcursionServices(){
-        return axios.get("http://localhost:8080/services", { params: { type: "Excursiones"} } );
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services", { params: { type: "Excursiones"} } );
     }
 
     /**
@@ -67,7 +67,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getServiceById(serviceId){
-        return axios.get("http://localhost:8080/services/" + serviceId);
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/services/" + serviceId);
     }
 
     /**
@@ -76,7 +76,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllServicesDetailed(token){
-        return axios.get("http://localhost:8080/auth/services-detailed", { headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/services-detailed", { headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -86,7 +86,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     createService(data, token) {
-        return axios.post("http://localhost:8080/auth/services", data, { headers: {Authorization: `Bearer ${token}`} } );
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/auth/services", data, { headers: {Authorization: `Bearer ${token}`} } );
     }
 
     /**
@@ -97,7 +97,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     updateService(data, id, token) {
-        return axios.put("http://localhost:8080/auth/services/" + id, data, { headers: {Authorization: `Bearer ${token}`} } );
+        return axios.put("http://vps-3991849-x.dattaweb.com:8080/auth/services/" + id, data, { headers: {Authorization: `Bearer ${token}`} } );
     }
 
     /**
@@ -107,7 +107,7 @@ class ServiceConnection {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     deleteService(id, token){
-        return axios.delete("http://localhost:8080/auth/services/" + id, {headers: {Authorization: `Bearer ${token}`}})
+        return axios.delete("http://vps-3991849-x.dattaweb.com:8080/auth/services/" + id, {headers: {Authorization: `Bearer ${token}`}})
     }
 }
 

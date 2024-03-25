@@ -11,7 +11,7 @@ class SalesService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllSales(token){
-        return axios.get("http://localhost:8080/auth/sales", {headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/sales", {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -21,7 +21,7 @@ class SalesService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getSaleById(id, token){
-        return axios.get("http://localhost:8080/auth/sales/" + id, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/sales/" + id, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -31,7 +31,7 @@ class SalesService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     createSale(data, token){
-        return axios.post("http://localhost:8080/auth/sales", data, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/auth/sales", data, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -42,7 +42,7 @@ class SalesService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     updateSale(id, data, token){
-        return axios.put("http://localhost:8080/auth/sales/" + id, data, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.put("http://vps-3991849-x.dattaweb.com:8080/auth/sales/" + id, data, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -52,7 +52,7 @@ class SalesService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     deleteSale(id, token){
-        return axios.delete("http://localhost:8080/auth/sales/" + id, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.delete("http://vps-3991849-x.dattaweb.com:8080/auth/sales/" + id, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -61,7 +61,7 @@ class SalesService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     createSaleFromClient(data){
-        return axios.post("http://localhost:8080/clients/sale", data);
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/clients/sale", data);
     }
 }
 

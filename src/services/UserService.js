@@ -11,7 +11,7 @@ class UserService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     createUser(data){
-        return axios.post("http://localhost:8080/user", data);
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/user", data);
     }
 
     /**
@@ -20,7 +20,7 @@ class UserService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     logIn(data){
-        return axios.post("http://localhost:8080/user/login", data);
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/user/login", data);
     }
 }
 

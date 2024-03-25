@@ -11,7 +11,7 @@ class EmployeeService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllEmployees(token){
-        return axios.get("http://localhost:8080/auth/get-employees", {headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/get-employees", {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -20,7 +20,7 @@ class EmployeeService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllEmployeesWithAllInfo(token){
-        return axios.get("http://localhost:8080/auth/employees", {headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/employees", {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -30,7 +30,7 @@ class EmployeeService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getEmployeeById(id, token){
-        return axios.get("http://localhost:8080/auth/employees/" + id, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/auth/employees/" + id, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -40,7 +40,7 @@ class EmployeeService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     createEmployee(data, token){
-        return axios.post("http://localhost:8080/auth/employees", data, {headers: {Authorization: `Bearer ${token}`}})
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/auth/employees", data, {headers: {Authorization: `Bearer ${token}`}})
     }
 
     /**
@@ -51,7 +51,7 @@ class EmployeeService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     createEmployeeAndLinkWitExistPerson(data, dni, token){
-        return axios.post("http://localhost:8080/auth/employees/" + dni, data, {headers: {Authorization: `Bearer ${token}`}})
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/auth/employees/" + dni, data, {headers: {Authorization: `Bearer ${token}`}})
     }
 
     /**
@@ -62,7 +62,7 @@ class EmployeeService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     updateEmployee(data, id, token){
-        return axios.put("http://localhost:8080/auth/employees/" + id, data, {headers: {Authorization: `Bearer ${token}`}})
+        return axios.put("http://vps-3991849-x.dattaweb.com:8080/auth/employees/" + id, data, {headers: {Authorization: `Bearer ${token}`}})
     }
 
     /**
@@ -73,7 +73,7 @@ class EmployeeService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     deleteEmployee(id, operation, token){
-        return axios.delete("http://localhost:8080/auth/employees/" + id, {headers: {Authorization: `Bearer ${token}`}, params: {operation: operation}})
+        return axios.delete("http://vvps-3991849-x.dattaweb.com:8080/auth/employees/" + id, {headers: {Authorization: `Bearer ${token}`}, params: {operation: operation}})
     }
 }
 

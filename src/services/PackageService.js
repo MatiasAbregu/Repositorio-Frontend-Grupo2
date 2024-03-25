@@ -10,7 +10,7 @@ class PackageService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getAllPackages(){
-        return axios.get("http://localhost:8080/packages");
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/packages");
     }
 
     /**
@@ -19,7 +19,7 @@ class PackageService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     getPackageById(id){
-        return axios.get("http://localhost:8080/packages/" + id);
+        return axios.get("http://vps-3991849-x.dattaweb.com:8080/packages/" + id);
     }
 
     /**
@@ -29,7 +29,7 @@ class PackageService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     createPackage(data, token){
-        return axios.post("http://localhost:8080/auth/packages", data, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.post("http://vps-3991849-x.dattaweb.com:8080/auth/packages", data, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -40,7 +40,7 @@ class PackageService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     updatePackage(id, data, token){
-        return axios.put("http://localhost:8080/auth/packages/" + id, data, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.put("http://vps-3991849-x.dattaweb.com:8080/auth/packages/" + id, data, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     /**
@@ -50,7 +50,7 @@ class PackageService {
      * @returns {Promise<AxiosResponse<any>>} Una promesa que resuelve con la respuesta de la solicitud HTTP.
      */
     deletePackage(id, token) {
-        return axios.delete("http://localhost:8080/auth/packages/" + id, {headers: {Authorization: `Bearer ${token}`}});
+        return axios.delete("http://vps-3991849-x.dattaweb.com:8080/auth/packages/" + id, {headers: {Authorization: `Bearer ${token}`}});
     }
 
 }
